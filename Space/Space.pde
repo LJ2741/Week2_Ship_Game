@@ -1,7 +1,7 @@
 Player player;
 
 int e_amount = 35; 
-
+// antyhign
 
 Enemy[] enemies = new Enemy[e_amount];
 
