@@ -39,7 +39,7 @@ class Enemy {
       if (passedTime > totalTime) {
         int ran = round(random(0,100));
         
-        if (ran > 95) {
+        if (ran > 97) {
           bullet.setPos(pos.x,pos.y + 150,0,5);
         savedTime = millis();
         }

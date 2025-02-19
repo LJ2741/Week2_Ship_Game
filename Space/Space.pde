@@ -49,7 +49,7 @@ void Collisions(Bullet b,Enemy e,Player p,Bullet be){
     p.shooting = false;
   }
   
-  if (dist(mouseX - 50,displayHeight - 100,be.pos.x,be.pos.y) < 75) {
+  if (dist(mouseX - 50,displayHeight - 100,be.pos.x,be.pos.y) < 70) {
     p.dead = true;
     p.shooting = false;
   }
