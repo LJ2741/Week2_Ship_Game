@@ -1,19 +1,17 @@
 Player player;
 
-int e_amount = 35; 
-
-
-Enemy[] enemies = new Enemy[e_amount];
+Enemy[][] enemies = new Enemy[15][3];
 
 
 void setup() {
   frameRate(60);
   fullScreen();
   player = new Player();
-   
-  for (int i = 0; i < e_amount ; i += 1) {
-    enemies[i] = new Enemy(i * 150 ,0);
+  for (int y = 0; y < 3 ; y ++) {
+  for (int i = 0; i < enemies.length ; i ++) {
+    enemies[i][y] = new Enemy(i * 150,y * 150);
     
+  }
   }
 
 }
@@ -23,13 +21,13 @@ void draw() {
   background(0);
   player.Display();
   player.shoot();
-  
-  for (int i = 0; i < e_amount; i++){
-    enemies[i].Display();
-    enemies[i].attack();
-    Collisions(player.bullet,enemies[i],player,enemies[i].bullet);
+  for (int y = 0; y < 3; y++) {
+  for (int i = 0; i < enemies.length; i++){
+    enemies[i][y].Display();
+    enemies[i][y].attack();
+    Collisions(player.bullet,enemies[i][y],player,enemies[i][y].bullet);
 
-    
+  }
   }
   
 
