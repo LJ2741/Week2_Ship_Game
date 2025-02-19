@@ -10,7 +10,6 @@ void setup() {
   for (int y = 0; y < 3 ; y ++) {
   for (int i = 0; i < enemies.length ; i ++) {
     enemies[i][y] = new Enemy(i * 150,y * 150);
-    
   }
   }
 
@@ -25,6 +24,7 @@ void draw() {
   for (int i = 0; i < enemies.length; i++){
     enemies[i][y].Display();
     enemies[i][y].attack();
+    movement(enemies[i][y]);
     Collisions(player.bullet,enemies[i][y],player,enemies[i][y].bullet);
 
   }
@@ -55,6 +55,18 @@ void Collisions(Bullet b,Enemy e,Player p,Bullet be){
   }
 }
 
+void movement(Enemy e) {
+  if (e.pos.x < 0 || e.pos.x > displayWidth - 90) {
+    for (int y = 0; y < 3; y++) {
+    for (int i = 0; i < enemies.length; i++){
+      enemies[i][y].velocity = enemies[i][y].velocity.mult(-1);
+      enemies[i][y].pos.y += 150;
+
+    }
+    }
+  }
+}
+  
 
 
     

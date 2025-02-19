@@ -9,7 +9,7 @@ class Enemy {
   Enemy(int x,int y) {
     img = loadImage("data/Enemy_ship.png");
     pos = new PVector(x,y);
-    velocity = new PVector(6,0);
+    velocity = new PVector(0.85,0);
     spawn = true;
     
   }
@@ -19,16 +19,7 @@ class Enemy {
     if (spawn == true) {
       image(img,pos.x,pos.y);
       pos.add(velocity);
-      if (pos.x > displayWidth - 90) {
-        velocity.x *= -1;
-        pos.y += 150;
-       }
-      
-      if (pos.x < 0) {
-        velocity.x *= -1;
-        pos.y += 150;
-      }
-    } 
+    }
   }
   
   
