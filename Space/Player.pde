@@ -9,7 +9,6 @@ class Player {
     img = loadImage("data/Player_ship.png");
     shooting = false;
     dead = false;
-    pos = new PVector(mouseX + 30,displayHeight - 200);
   }
   
   void Display() {
