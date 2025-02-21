@@ -6,7 +6,7 @@ class Player {
 
   
   Player() {
-    img = loadImage("data/Player_ship.png");
+    img = loadImage("data/Images/Player_ship.png");
     shooting = false;
     dead = false;
   }

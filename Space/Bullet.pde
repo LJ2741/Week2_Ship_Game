@@ -6,7 +6,7 @@ class Bullet {
   Bullet() {
     pos = new PVector(0,-2000);
     velocity = new PVector(0,-20);
-    img = loadImage("data/Bullet_img.png");
+    img = loadImage("data/Images/Bullet_img.png");
   }
   
   void setPos(float x,float y,float x2,float y2){

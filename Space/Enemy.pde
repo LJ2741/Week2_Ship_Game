@@ -7,7 +7,7 @@ class Enemy {
   int totalTime = 7000;
   
   Enemy(int x,int y) {
-    img = loadImage("data/Enemy_ship.png");
+    img = loadImage("data/Images/Enemy_ship.png");
     pos = new PVector(x,y);
     velocity = new PVector(0.85,0);
     spawn = true;
