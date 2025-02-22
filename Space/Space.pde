@@ -31,14 +31,6 @@ void draw() {
   player.Display();
   player.shoot();
   
-  for (int i = 0; i < particles.size() ; i++) { // Displays particles and removes old ones
-    particles.get(i).Display();
-    if (particles.get(i).life <= 0) {
-      particles.remove(i);
-    }
-  }
-  
-  
   for (int y = 0; y < 3; y++) { // Functions for enemies/collision
   for (int i = 0; i < enemies.length; i++){
     enemies[i][y].Display();
@@ -47,6 +39,14 @@ void draw() {
     movement(enemies[i][y]);
 
   }
+  }
+  
+  
+  for (int i = 0; i < particles.size() ; i++) { // Displays particles and removes old ones
+    particles.get(i).Display();
+    if (particles.get(i).life <= 0) {
+      particles.remove(i);
+    }
   }
   
 
@@ -78,14 +78,14 @@ void Collisions(Bullet b,Enemy e,Player p,Bullet be){
     p.shooting = false;
   }
   
-  if (dist(mouseX - 50,displayHeight - 150,be.pos.x,be.pos.y) < 65 && p.dead != true) {
+  if (dist(p.pos.x,p.pos.y,be.pos.x,be.pos.y) < 65 && p.dead != true) {
     P_explosion.play();
     p.dead = true; // An enemy has hit the player
     p.shooting = false;
     createParticles(e,p);
   }
   
-   if (dist(mouseX - 50,displayHeight - 150,e.pos.x,e.pos.y) < 150 && e.spawn == true && p.dead != true) {
+   if (dist(p.pos.x - 50,p.pos.y,e.pos.x,e.pos.y) < 150 && e.spawn == true && p.dead != true) {
     P_explosion.play();
     p.dead = true; // An enemy has touched the player
     p.shooting = false;
@@ -94,11 +94,11 @@ void Collisions(Bullet b,Enemy e,Player p,Bullet be){
 }
 
 void movement(Enemy e) {
-  if (e.pos.x < 0 || e.pos.x > displayWidth - 130) { // Makes all enemies move down as one hit the edge of the screen
+  if (e.pos.x < 0 || e.pos.x > displayWidth - 130) { // Makes all enemies move down as one hits the edge of the screen
     for (int y = 0; y < 3; y++) {
     for (int i = 0; i < enemies.length; i++){
-      enemies[i][y].pos.y += 150;
       enemies[i][y].velocity = enemies[i][y].velocity.mult(-1);
+      enemies[i][y].pos.y += 150;
 
     }
     }
@@ -111,14 +111,14 @@ void createParticles(Enemy e,Player p) { // Creates particles at the player's or
   
   if (p.dead == true) {
   
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 25; i++) {
       particles.add(new Particle());
-      particles.get(i).setPos(mouseX,displayHeight - 150);
+      particles.get(i).setPos(p.pos.x,p.pos.y);
     }
   } else {
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 25; i++) {
       particles.add(new Particle());
-      particles.get(i).setPos(e.pos.x + 50,e.pos.y + 50);
+      particles.get(i).setPos(e.pos.x + 60,e.pos.y + 50);
     }
   }
 }

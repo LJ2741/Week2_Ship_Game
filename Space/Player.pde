@@ -11,13 +11,14 @@ class Player {
     dead = false;
   }
   
-  void Display() {
+  void Display() { // Displays the player and makes it follow the mouse
+    pos = new PVector(mouseX,displayHeight - 150);
     if (dead == false) {
-      image(img,mouseX - 70,displayHeight - 200);
+      image(img,pos.x - 70,pos.y - 50);
     }
   }
   
-  void shoot(){
+  void shoot(){ // Fires the bullet
     if (shooting == true) {
       bullet.Display();
     }

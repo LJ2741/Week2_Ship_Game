@@ -6,7 +6,7 @@ class Enemy {
   int savedTime = millis();
   int totalTime = 7000;
   
-  Enemy(int x,int y) {
+  Enemy(int x,int y) { // Needed to set the position of the enemy at setup
     img = loadImage("data/Images/Enemy_ship.png");
     pos = new PVector(x,y);
     velocity = new PVector(0.85,0);
@@ -15,7 +15,7 @@ class Enemy {
   }
   
 
-  void Display() {
+  void Display() { // Changes position of the enemy
     if (spawn == true) {
       image(img,pos.x,pos.y);
       pos.add(velocity);
@@ -23,7 +23,7 @@ class Enemy {
   }
   
   
-  void attack() {
+  void attack() { // Makes the enemy fire a bullet every 7 seconds
     bullet.Display();
     if (spawn == true) {
       int passedTime = millis() - savedTime;
