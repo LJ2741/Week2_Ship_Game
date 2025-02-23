@@ -3,9 +3,12 @@ import processing.sound.*;
 Player player;
 SoundFile bgm,shooting,explosion,P_explosion;
 ArrayList<Particle> particles;
+JSONObject json;
 int enemies_killed = 0;
 int savedTime = millis();
 int totalTime = 15000;
+int score = 0;
+int highscore = 0;
 Enemy[][] enemies = new Enemy[15][3];
 
 
@@ -16,6 +19,8 @@ void setup() {
   shooting = new SoundFile(this,"data/Music&SFX/Shooting.mp3");
   explosion = new SoundFile(this,"data/Music&SFX/Explosion.mp3");
   P_explosion = new SoundFile(this,"data/Music&SFX/Player_Explosion.mp3");
+  json = loadJSONObject("data/highscore.json");
+  highscore = json.getInt("highscore");
   bgm.loop();
   player = new Player();
   particles = new ArrayList<Particle>();
@@ -27,6 +32,7 @@ void setup() {
 void draw() {
   background(0);
   reset();
+  score();
   player.Display();
   player.shoot();
   
@@ -68,12 +74,14 @@ void Collisions(Bullet b,Enemy e,Player p,Bullet be){
     explosion.play(); 
     createParticles(e,p); 
     
+    
     for (int y = 0; y < 3; y++) { // Increases enemy speed for every kill
     for (int i = 0; i < enemies.length; i++){
       enemies[i][y].velocity = enemies[i][y].velocity.mult(1.05);
     }
     }
     
+    score += 100;
     enemies_killed += 1;
     p.shooting = false;
   }
@@ -126,7 +134,7 @@ void createParticles(Enemy e,Player p) { // Creates particles at the player's or
 void spawnEnemies() {
   for (int y = 0; y < 3 ; y ++) { // Spawns in enemies in a grid pattern
   for (int i = 0; i < enemies.length ; i ++) {
-    enemies[i][y] = new Enemy(i * 150,y * 150);
+    enemies[i][y] = new Enemy(i * 150,y * 150 + 130);
     enemies[i][y].spawn = true;
   }
   }
@@ -134,11 +142,21 @@ void spawnEnemies() {
   
   
 
-void reset() { // Resets the game if the player is killed or all enemies are killed
+void reset() { // Resets the game and sets the highscore if the player is killed or all enemies are killed
   
-  if (player.dead == true) {
+  if (player.dead == true) { // player is killed and highscore is set
+    
+    if (score > highscore) { // Saves the new highscore into a json file
+      highscore = score;
+      json = loadJSONObject("data/highscore.json");
+      json.setInt("highscore",highscore);
+      saveJSONObject(json,"data/highscore.json");
+    }
+    
+    score = 0;
     enemies_killed = 0;
     int passedTime = millis() - savedTime;
+    
     if (passedTime > totalTime) {
       player.dead = false;
       spawnEnemies();
@@ -148,12 +166,29 @@ void reset() { // Resets the game if the player is killed or all enemies are kil
   }
 
     
-  if (enemies_killed == 45) {
+  if (enemies_killed == 45) { // player has won and the game is reset
     enemies_killed = 0;
     spawnEnemies();
   }
 }
     
+void score() { // Displays the current score and highscore
+  textSize(100);
+  textAlign(LEFT);
+  text("score " + score,25,110);
+  fill(255);
+  textAlign(RIGHT);
+  text("highscore " + highscore,displayWidth - 25,110);
+}
+
+void keyPressed() { // Press backspace to reset the highscore
+  if (keyCode == BACKSPACE) {
+    highscore = 0;
+    json = loadJSONObject("data/highscore.json");
+    json.setInt("highscore",0);
+    saveJSONObject(json,"data/highscore.json");
+  }
+}
   
 
     
