@@ -3,7 +3,9 @@ import processing.sound.*;
 Player player;
 SoundFile bgm,shooting,explosion,P_explosion;
 ArrayList<Particle> particles;
-
+int enemies_killed = 0;
+int savedTime = millis();
+int totalTime = 15000;
 Enemy[][] enemies = new Enemy[15][3];
 
 
@@ -17,17 +19,14 @@ void setup() {
   bgm.loop();
   player = new Player();
   particles = new ArrayList<Particle>();
-  for (int y = 0; y < 3 ; y ++) { // Spawns in enemies in a grid pattern
-  for (int i = 0; i < enemies.length ; i ++) {
-    enemies[i][y] = new Enemy(i * 150,y * 150);
-  }
-  }
+  spawnEnemies();
 
 }
 
 
 void draw() {
   background(0);
+  reset();
   player.Display();
   player.shoot();
   
@@ -75,6 +74,7 @@ void Collisions(Bullet b,Enemy e,Player p,Bullet be){
     }
     }
     
+    enemies_killed += 1;
     p.shooting = false;
   }
   
@@ -123,6 +123,37 @@ void createParticles(Enemy e,Player p) { // Creates particles at the player's or
   }
 }
   
+void spawnEnemies() {
+  for (int y = 0; y < 3 ; y ++) { // Spawns in enemies in a grid pattern
+  for (int i = 0; i < enemies.length ; i ++) {
+    enemies[i][y] = new Enemy(i * 150,y * 150);
+    enemies[i][y].spawn = true;
+  }
+  }
+}
+  
+  
 
+void reset() { // Resets the game if the player is killed or all enemies are killed
+  
+  if (player.dead == true) {
+    enemies_killed = 0;
+    int passedTime = millis() - savedTime;
+    if (passedTime > totalTime) {
+      player.dead = false;
+      spawnEnemies();
+      savedTime = millis();
+    }
+        
+  }
+
+    
+  if (enemies_killed == 45) {
+    enemies_killed = 0;
+    spawnEnemies();
+  }
+}
+    
+  
 
     
