@@ -15,13 +15,7 @@ Enemy[][] enemies = new Enemy[15][3];
 void setup() {
   frameRate(60);
   fullScreen();
-  bgm = new SoundFile(this,"data/Music&SFX/BGM.mp3");
-  shooting = new SoundFile(this,"data/Music&SFX/Shooting.mp3");
-  explosion = new SoundFile(this,"data/Music&SFX/Explosion.mp3");
-  P_explosion = new SoundFile(this,"data/Music&SFX/Player_Explosion.mp3");
-  json = loadJSONObject("data/highscore.json");
-  highscore = json.getInt("highscore");
-  bgm.loop();
+  thread("fileMapping"); // This function is on a seprate thread to reduce start up lag
   player = new Player();
   particles = new ArrayList<Particle>();
   spawnEnemies();
@@ -66,15 +60,22 @@ void mouseClicked(){ // Shooting function
   }
 }
 
+void keyPressed() { // Press backspace to reset the highscore
+  if (keyCode == BACKSPACE) {
+    highscore = 0;
+    json = loadJSONObject("data/highscore.json");
+    json.setInt("highscore",0);
+    saveJSONObject(json,"data/highscore.json");
+  }
+}
 
 
 void Collisions(Bullet b,Enemy e,Player p,Bullet be){
-  if (dist(b.pos.x,b.pos.y,e.pos.x + 20,e.pos.y) < 100 && e.spawn == true && player.shooting == true) {
+  if (dist(b.pos.x,b.pos.y,e.pos.x + 70,e.pos.y) < 90 && e.spawn == true && player.shooting == true) {
     e.spawn = false; // player has hit an enemy
     explosion.play(); 
     createParticles(e,p); 
-    
-    
+        
     for (int y = 0; y < 3; y++) { // Increases enemy speed for every kill
     for (int i = 0; i < enemies.length; i++){
       enemies[i][y].velocity = enemies[i][y].velocity.mult(1.05);
@@ -181,14 +182,17 @@ void score() { // Displays the current score and highscore
   text("highscore " + highscore,displayWidth - 25,110);
 }
 
-void keyPressed() { // Press backspace to reset the highscore
-  if (keyCode == BACKSPACE) {
-    highscore = 0;
-    json = loadJSONObject("data/highscore.json");
-    json.setInt("highscore",0);
-    saveJSONObject(json,"data/highscore.json");
-  }
+
+void fileMapping() { // Sets all file variables and starts bgm
+  bgm = new SoundFile(this,"data/Music&SFX/BGM.mp3");
+  shooting = new SoundFile(this,"data/Music&SFX/Shooting.mp3");
+  explosion = new SoundFile(this,"data/Music&SFX/Explosion.mp3");
+  P_explosion = new SoundFile(this,"data/Music&SFX/Player_Explosion.mp3");
+  bgm.loop();
+  json = loadJSONObject("data/highscore.json");
+  highscore = json.getInt("highscore");
 }
+  
   
 
     
